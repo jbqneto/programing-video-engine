@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "id": "afterhours-demo",
+  "title": "Afterhours Moderne | 3D Engine MVP",
+  "fps": 30,
+  "width": 1280,
+  "height": 720,
+  "scenes": [
+    {
+      "id": "scene-01-cinematic-lounge",
+      "type": "lounge-3d",
+      "durationFrames": 150,
+      "palette": {"background": "#101927", "accent": "#ffc174", "secondary": "#25535b", "text": "#f8edda"},
+      "snowfall": {"count": 115, "speed": 0.48, "seed": 31415},
+      "camera": {"startX": -0.35, "endX": 0.36, "y": 2.35, "z": 8.1},
+      "title": "A Winter Evening"
+    },
+    {
+      "id": "scene-02-motion-graphics",
+      "type": "motion-3d",
+      "durationFrames": 120,
+      "palette": {"background": "#0d1522", "accent": "#d8af69", "secondary": "#337b8a", "text": "#f8edda"},
+      "title": "AFTERHOURS MODERNE",
+      "subtitle": "CINEMATIC VIDEO ENGINE  /  DEMO 01",
+      "rings": 3
+    }
+  ]
+}
