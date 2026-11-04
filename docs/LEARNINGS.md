@@ -38,3 +38,12 @@ Use this file to accumulate confirmed findings, repeatable recipes, quality chec
 - Alpha exports and subtitle/safe-area rules for Shorts
 - Long-video memory constraints and deterministic particle behavior
 - Motion-graphics cues aligned with narration words or markers
+
+## 2026-11-04 — Supported LTS runtime and coordinated dependency upgrades
+
+- **Context:** The original MVP specified Node >=22 and used broad Remotion ranges, older Vite, Three.js and TypeScript versions.
+- **Observation:** Official release policy shows Node 26 as Active LTS and 24 as Maintenance LTS. Remotion explicitly requires every `@remotion/*` package to match `remotion` exactly.
+- **Rule:** Develop on Node 26, support Node 24, reject Node 22 and prereleases, and pin identical Remotion versions.
+- **Reusable shortcut:** `npm run check:versions` → `npm run typecheck` → `npm run test` → `npm run ui:build` → `npm run mcp:check` → `npm run audit:prod`.
+- **Validation:** CI Node 24/26 matrix; browser WebGL and MP4 rendering still require an end-to-end check.
+- **Known limits:** Repository did not yet have `package-lock.json`; commit one after confirming the upgrade.

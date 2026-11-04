@@ -4,7 +4,7 @@ This MVP uses Remotion both in the browser (\`@remotion/player\`) and for CLI vi
 
 ## Start
 
-Requirements: Node.js 22+, npm; for visual 3D preview, a browser with WebGL.
+Requirements: Node.js 24 or 26 LTS, npm; for visual 3D preview, a browser with WebGL.
 
 \`\`\`bash
 npm install

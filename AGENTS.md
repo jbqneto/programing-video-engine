@@ -28,6 +28,15 @@ Build reproducible 2D/3D videos from validated JSON. Support an agent-first work
 8. Append a dated, evidence-based entry to \`docs/LEARNINGS.md\` whenever a reliable new shortcut or failure mode is discovered.
 9. If a new animation effect is useful repeatedly, propose/implement a **versioned preset with explicit inputs**, examples, tests, and a documented change history.
 
+## Runtime and dependency rules
+
+- Develop with Node 26 LTS; keep Node 24 LTS green. Reject Node 22, EOL and prerelease runtimes.
+- Follow [Runtime and Dependency Policy](docs/dependency-policy.md); research stable releases and the publisher's security advisories before any major upgrades.
+- Keep all `remotion` and `@remotion/*` packages pinned to the **same exact version**.
+- Keep runtime TypeScript declarations compatible with the oldest supported Node (24), and set `compilerOptions.types=["node"]` for TypeScript 7.
+- Generate and commit the npm lockfile after the dependency migration so the CI can use `npm ci`; never auto-accept major upgrades or use `npm audit fix --force`.
+- CI must test Node 24 and 26, the UI build, the MCP transports and the offline test suite.
+
 ## Rules
 
 - Never use wall-clock time or non-seeded randomness in frame rendering.
