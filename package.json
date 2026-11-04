@@ -30,7 +30,7 @@
     "zod": "^4.0.0",
     "@remotion/player": "^4.0.0",
     "@modelcontextprotocol/server": "^2.4.0",
-    "@modelcontextprotocol/node": "^2.4.0"
+    "@modelcontextprotocol/node": "^2.1.2"
   },
   "devDependencies": {
     "@remotion/cli": "^4.0.0",
