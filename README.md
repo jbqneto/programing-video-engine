@@ -89,6 +89,20 @@ Poly Haven downloads are stored under `public/assets/polyhaven/` with local prov
 
 See [Free 3D asset sources, licenses and CLI](docs/free-assets.md) for the full catalog, licensing precautions, and examples. The public repository does not currently include a code LICENSE file: select one explicitly before accepting external contributions.
 
+## Agent skills — curated local production toolkits
+
+Seven curated upstream [Scenario Labs Skills](https://github.com/scenario-labs/skills) are included under `.agents/skills/`, together with their local scripts, references, original MIT license and a first-party `pve-cinematic-agent` routing skill. The original source is pinned for reproducibility. These are **opt-in local workflows**; neither running the UI nor starting MCP requires a Scenario account or cloud API.
+
+Included: `scenario-motion-loops`, `scenario-video-color-grade`, `scenario-blender-expert`, `scenario-blender-export`, `scenario-blender-lighting-rendering`, `scenario-blender-previs-storyboard` and `scenario-blender-animation`.
+
+```bash
+npm run skills -- list
+npm run skills -- show scenario-motion-loops
+npm run skills:check
+```
+
+Agents can discover them via MCP `list_agent_skills` and read one via `get_agent_skill`. See the [curated-skill inventory, prerequisites, license and usage](docs/scenario-skills.md). Blender, Python, FFmpeg and Playwright are **optional** external prerequisites for specific scripts; the copied scripts are not automatically executed by the video engine. The existing Remotion renderer remains the source of truth.
+
 ## Product roadmap
 
 1. Add a `SceneType` and `RenderAdapter` registry (`remotion`, `hyperframes`, `blender`), with separate schemas for effects, cameras, and objects.
@@ -105,6 +119,13 @@ See [Free 3D asset sources, licenses and CLI](docs/free-assets.md) for the full 
 - The repository does not include music or third-party models.
 - Install npm dependencies on the target machine. This environment did not have the registry dependencies available, so a full end-to-end Remotion render has not been run here.
 - Linux server rendering may require WebGL/Chromium adjustments and chunking for long videos.
+
+## Useful links
+
+- [Scenario Labs Skills — upstream skill repository](https://github.com/scenario-labs/skills) (source of the curated skills, MIT).
+- [Our curated Scenario skill inventory](docs/scenario-skills.md), including the exact upstream commit, dependencies and local usage.
+- [Motion Loops upstream](https://github.com/scenario-labs/skills/tree/main/skills/scenario-motion-loops) — local deterministic Canvas examples and seam validation.
+- [Blender Export upstream](https://github.com/scenario-labs/skills/tree/main/skills/dcc/blender/scenario-blender-export) — GLB/glTF workflows.
 
 ## References
 

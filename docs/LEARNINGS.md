@@ -38,3 +38,12 @@ Use this file to accumulate confirmed findings, repeatable recipes, quality chec
 - Alpha exports and subtitle/safe-area rules for Shorts
 - Long-video memory constraints and deterministic particle behavior
 - Motion-graphics cues aligned with narration words or markers
+
+## 2026-11-04 — Curated local production skills from Scenario Labs
+
+- **Context:** [Scenario Labs Skills](https://github.com/scenario-labs/skills), pinned to commit \`e24bc7d40be97b428e7b9fd467c415366e1dd974\`.
+- **Observation:** The upstream repository publishes useful local code for deterministic loops, color grading, Blender GLB export, lighting, previs and keyframe animation alongside optional hosted Scenario generation workflows.
+- **Rule:** Vendor only the complete skill folders useful to the engine, including referenced local scripts and documents, preserve MIT license/provenance, and never require Scenario cloud for the local MVP.
+- **Reusable shortcut:** MCP \`list_agent_skills\` → \`get_agent_skill\`; CLI \`npm run skills -- list\` → \`npm run skills -- show scenario-motion-loops\`.
+- **Validation:** \`npm run skills:check\`, unit tests and stdio/HTTP MCP smoke tests verify that local files and documentation are available. This does not test Blender or a rendered video.
+- **Known limits:** External Blender/Playwright/Python/FFmpeg prerequisites are optional and not auto-installed; their production workflows are not yet first-party Remotion adapters.

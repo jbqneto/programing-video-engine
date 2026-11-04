@@ -94,6 +94,36 @@ export function createVideoMcpServer() {
     annotations: {readOnlyHint: true}
   }, safe(() => readPreviewState()));
 
+
+  server.registerTool('list_agent_skills', {
+    description: 'Discover the curated, optional local animation, grading and Blender skills. Returns prerequisites, the pinned upstream source and on-disk SKILL.md locations. No scripts or network services are executed.',
+    inputSchema: z.object({}),
+    annotations: {readOnlyHint: true, destructiveHint: false, openWorldHint: false}
+  }, safe(() => {
+    const catalog = JSON.parse(readFileSync(resolve('.agents/skills/catalog.json'), 'utf8'));
+    return {repository: catalog.repository, upstreamCommit: catalog.upstreamCommit,
+      policy: catalog.policy, skills: catalog.skills};
+  }));
+
+  server.registerTool('get_agent_skill', {
+    description: 'Read one curated SKILL.md after list_agent_skills. Documentation only: it never executes scripts or calls Scenario cloud services.',
+    inputSchema: z.object({skillId: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(100)}),
+    annotations: {readOnlyHint: true, destructiveHint: false, openWorldHint: false}
+  }, async ({skillId}) => {
+    try {
+      const catalog = JSON.parse(readFileSync(resolve('.agents/skills/catalog.json'), 'utf8'));
+      const entry = catalog.skills.find((item: {id: string}) => item.id === skillId);
+      if (!entry) throw new Error('Unknown skill: ' + skillId);
+      const documentation = readFileSync(resolve('.agents/skills', skillId, 'SKILL.md'), 'utf8');
+      return result({id: skillId, source: entry.upstreamUrl, prerequisites: entry.runtime,
+        warning: 'Local scripts require separate prerequisites. Do not run paid cloud actions without approval.',
+        instructions: documentation});
+    } catch (error) {
+      return {isError: true, content: [{type: 'text' as const,
+        text: error instanceof Error ? error.message : 'UNKNOWN_ERROR'}]};
+    }
+  });
+
   server.registerTool('get_agent_guide', {
     description: 'Read the local agent instructions (AGENTS.md). Consult this before editing a project or introducing presets.',
     inputSchema: z.object({}),
