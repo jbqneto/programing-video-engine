@@ -8,6 +8,20 @@ A declarative prototype for generating 3D videos with **Remotion + Three.js / Re
 - Chromium with WebGL; a GPU is recommended because software rendering can be slow
 - FFmpeg for video encoding
 
+## Agent workbench: preview, timeline, presets and MCP
+
+The agent-facing workbench is documented in [Workbench + MCP](docs/workbench.md), [Presets](docs/presets.md), [Agent rules](AGENTS.md) and the incremental [Learning Log](docs/LEARNINGS.md). It borrows selected lessons from the previous [Canvas Animator / FlashMotion Studio](docs/canvas-animator-reuse.md) without importing its separate 2D renderer.
+
+```bash
+npm install && npm run workbench
+```
+
+Open **http://127.0.0.1:5173** for playback, frame-by-frame scrubbing, timecode and scene inspection. The MCP Streamable HTTP endpoint listens on **http://127.0.0.1:3333/mcp** (localhost-only development access); agents can instead spawn the stdio server via `npm run mcp:stdio`. The browser and agent share a copy of the project at `out/workbench-project.json`, leaving the original sample untouched.
+
+The first versioned, two-input preset is `fade-in-entrance` (images A and B). Agents can discover it with `list_presets`, apply it with `apply_preset` after reading `get_project` revision, update existing scene fields through `update_scene`, and seek the preview with `seek_preview`. Two example SVG assets are included. Current MCP edits work even if the browser tab is closed; the GUI reloads the changed project on its next poll. MP4 rendering remains an explicit CLI step.
+
+Verify both MCP transports: `npm run mcp:check`. Never expose the unauthenticated local HTTP MCP port to a public network.
+
 ## Quick start
 
 After installing Node.js 22+ and npm, run:
