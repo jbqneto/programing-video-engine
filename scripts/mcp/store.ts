@@ -83,7 +83,7 @@ export function updateWorkbenchScene(input: {
     (typeof input.patch.durationFrames !== 'number' || input.patch.durationFrames > 54_000)) {
     throw new Error('Scene duration must be at most 54,000 frames.');
   }
-  let merged = {...existing, ...input.patch};
+  let merged: Record<string, unknown> = {...existing, ...input.patch};
   if (input.patch.palette && typeof input.patch.palette === 'object' && !Array.isArray(input.patch.palette)) {
     merged = {...merged, palette: {...existing.palette, ...(input.patch.palette as object)}};
   }

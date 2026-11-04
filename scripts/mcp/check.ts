@@ -11,7 +11,7 @@ const stdioClient = makeClient();
 try {
   await stdioClient.connect(new StdioClientTransport({command: tsx, args: ['scripts/mcp/stdio.ts']}));
   const list = await stdioClient.listTools();
-  for (const expected of ['get_project', 'describe_timeline', 'list_presets', 'apply_preset', 'seek_preview']) {
+  for (const expected of ['get_project', 'describe_timeline', 'list_presets', 'apply_preset', 'update_scene', 'seek_preview']) {
     if (!list.tools.some(tool => tool.name === expected)) throw new Error('Missing stdio MCP tool: ' + expected);
   }
   const presetResult = await stdioClient.callTool({name: 'list_presets', arguments: {}});
