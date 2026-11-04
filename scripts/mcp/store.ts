@@ -61,6 +61,45 @@ export function applyWorkbenchPreset(input: {
   atomicWrite(WORKBENCH_PROJECT, JSON.stringify(updated, null, 2) + '\n');
   return {scene, ...readProject()};
 }
+
+export function updateWorkbenchScene(input: {
+  sceneId: string; expectedRevision: string; patch: Record<string, unknown>;
+}) {
+  const before = readProject();
+  if (before.revision !== input.expectedRevision) throw new Error('REVISION_CONFLICT: refresh get_project.');
+  const index = before.project.scenes.findIndex(scene => scene.id === input.sceneId);
+  if (index < 0) throw new Error('Scene not found: ' + input.sceneId);
+  const existing = before.project.scenes[index];
+  const allowed: Record<string, string[]> = {
+    'lounge-3d': ['title', 'camera', 'snowfall', 'palette', 'durationFrames'],
+    'motion-3d': ['title', 'subtitle', 'rings', 'palette', 'durationFrames'],
+    'image-transition': ['inputs', 'palette', 'durationFrames']
+  };
+  for (const key of Object.keys(input.patch)) {
+    if (!allowed[existing.type].includes(key)) throw new Error('Field is not editable for this scene: ' + key);
+  }
+  if (Object.keys(input.patch).length === 0) throw new Error('Patch cannot be empty.');
+  if (input.patch.durationFrames !== undefined &&
+    (typeof input.patch.durationFrames !== 'number' || input.patch.durationFrames > 54_000)) {
+    throw new Error('Scene duration must be at most 54,000 frames.');
+  }
+  let merged = {...existing, ...input.patch};
+  if (input.patch.palette && typeof input.patch.palette === 'object' && !Array.isArray(input.patch.palette)) {
+    merged = {...merged, palette: {...existing.palette, ...(input.patch.palette as object)}};
+  }
+  if (existing.type === 'image-transition' && input.patch.inputs && typeof input.patch.inputs === 'object' && !Array.isArray(input.patch.inputs)) {
+    const inputs = {...existing.inputs, ...(input.patch.inputs as object)};
+    assertImageAsset(String(inputs.imageA));
+    assertImageAsset(String(inputs.imageB));
+    merged = {...merged, inputs};
+  }
+  const updated = projectSchema.parse({...before.project, scenes: before.project.scenes.map((scene, i) => i === index ? merged : scene)});
+  if (readProject().revision !== before.revision) throw new Error('REVISION_CONFLICT');
+  atomicWrite(WORKBENCH_PROJECT, JSON.stringify(updated, null, 2) + '\n');
+  const snapshot = readProject();
+  return {scene: snapshot.project.scenes[index], revision: snapshot.revision, frames: snapshot.frames};
+}
+
 export type PreviewState = {sequence: number; frame: number; playing: boolean};
 export function readPreviewState(): PreviewState {
   if (!existsSync(PREVIEW_STATE)) return {sequence: 0, frame: 0, playing: false};

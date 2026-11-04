@@ -18,7 +18,7 @@ npm install && npm run workbench
 
 Open **http://127.0.0.1:5173** for playback, frame-by-frame scrubbing, timecode and scene inspection. The MCP Streamable HTTP endpoint listens on **http://127.0.0.1:3333/mcp** (localhost-only development access); agents can instead spawn the stdio server via `npm run mcp:stdio`. The browser and agent share a copy of the project at `out/workbench-project.json`, leaving the original sample untouched.
 
-The first versioned, two-input preset is `fade-in-entrance` (images A and B). Agents can discover it with `list_presets`, apply it with `apply_preset` after reading `get_project` revision, and seek the preview with `seek_preview`. Two example SVG assets are included. Current MCP edits work even if the browser tab is closed; the GUI reloads the changed project on its next poll. MP4 rendering remains an explicit CLI step.
+The first versioned, two-input preset is `fade-in-entrance` (images A and B). Agents can discover it with `list_presets`, apply it with `apply_preset` after reading `get_project` revision, update existing scene fields through `update_scene`, and seek the preview with `seek_preview`. Two example SVG assets are included. Current MCP edits work even if the browser tab is closed; the GUI reloads the changed project on its next poll. MP4 rendering remains an explicit CLI step.
 
 Verify both MCP transports: `npm run mcp:check`. Never expose the unauthenticated local HTTP MCP port to a public network.
 

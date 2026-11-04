@@ -50,6 +50,20 @@ seek_preview({seconds: 9.5}) # open UI seeks to the requested moment
 
 Both example images ship under \`public/demo/\`. To insert different pictures, put them under \`public/\` first. The app prevents traversal and resolves real paths before accepting images, including symlinks.
 
+### Edit an existing scene at a precise time
+
+Call `describe_timeline` to map the requested minute/second to a scene ID. Call `get_project` for its current values and revision, then `update_scene` with an allowlisted partial patch:
+
+```json
+{
+  "sceneId": "scene-02-motion-graphics",
+  "expectedRevision": "<latest get_project revision>",
+  "patch": {"title": "A NEW TITLE", "rings": 4}
+}
+```
+
+Allowed fields: `lounge-3d` supports title, camera, snowfall, palette, durationFrames; `motion-3d` supports title, subtitle, rings, palette, durationFrames; `image-transition` supports inputs, palette, durationFrames. Changing `durationFrames` shifts subsequent scene boundaries. Structural changes still require a new preset or explicit code edits. UI property editing and timeline keyframe editing are future milestones.
+
 ### Render the current edited project
 
 \`\`\`bash

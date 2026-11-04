@@ -3,7 +3,7 @@ import {resolve} from 'node:path';
 import {McpServer} from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import {PRESET_CATALOG} from '../../src/presets/registry';
-import {applyWorkbenchPreset, readPreviewState, readProject, seekPreview} from './store';
+import {applyWorkbenchPreset, updateWorkbenchScene, readPreviewState, readProject, seekPreview} from './store';
 
 const result = (payload: unknown) => ({content: [{type: 'text' as const, text: JSON.stringify(payload, null, 2)}]});
 const safe = <T>(fn: () => T | Promise<T>) => async () => {
@@ -59,6 +59,19 @@ export function createVideoMcpServer() {
     } catch (error) {
       return {isError: true, content: [{type: 'text' as const, text: error instanceof Error ? error.message : 'UNKNOWN_ERROR'}]};
     }
+  });
+
+  server.registerTool('update_scene', {
+    description: 'Apply a validated field patch to an existing scene without replacing other scenes. Call get_project first; use the latest expectedRevision. Permitted fields depend on scene type. Use describe_timeline to find the intended scene at a precise time.',
+    inputSchema: z.object({
+      sceneId: z.string().min(1).max(100),
+      expectedRevision: z.string().regex(/^[0-9a-f]{64}$/),
+      patch: z.record(z.string(), z.unknown())
+    }),
+    annotations: {readOnlyHint: false, destructiveHint: false, openWorldHint: false}
+  }, async ({sceneId, expectedRevision, patch}) => {
+    try {return result(updateWorkbenchScene({sceneId, expectedRevision, patch}));}
+    catch (error) {return {isError: true, content: [{type: 'text' as const, text: error instanceof Error ? error.message : 'UNKNOWN_ERROR'}]};}
   });
 
   server.registerTool('seek_preview', {

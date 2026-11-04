@@ -130,7 +130,7 @@ export const App: React.FC = () => {
           </div>
           <div className="transport">
             <button onClick={() => seek(0)} title="Beginning">⏮</button>
-            <button className="primary" onClick={() => {if (player.current?.isPlaying()) player.current.pause(); else player.current?.play(); setPlaying(Boolean(!player.current?.isPlaying()));}}>
+            <button className="primary" onClick={() => {const wasPlaying = player.current?.isPlaying() ?? false; if (wasPlaying) player.current?.pause(); else player.current?.play(); setPlaying(!wasPlaying);}}>
               {playing ? 'Pause' : 'Play'}
             </button>
             <button onClick={() => seek(frame - 1)} title="Previous frame">‹</button>

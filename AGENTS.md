@@ -25,8 +25,8 @@ Build reproducible 2D/3D videos from validated JSON. Support an agent-first work
 4. Use \`apply_preset\` with a current \`expectedRevision\`. Never overwrite a stale revision. Files must already exist under \`public/\`.
 5. Use \`seek_preview\` with \`seconds\` or \`frame\` to direct the connected browser; the MCP itself does not depend on an open tab.
 6. Test with \`npm run typecheck\`, \`npm run test\`, and \`npm run mcp:check\` before proposing changes.
-7. Append a dated, evidence-based entry to \`docs/LEARNINGS.md\` whenever a reliable new shortcut or failure mode is discovered.
-8. If a new animation effect is useful repeatedly, propose/implement a **versioned preset with explicit inputs**, examples, tests, and a documented change history.
+8. Append a dated, evidence-based entry to \`docs/LEARNINGS.md\` whenever a reliable new shortcut or failure mode is discovered.
+9. If a new animation effect is useful repeatedly, propose/implement a **versioned preset with explicit inputs**, examples, tests, and a documented change history.
 
 ## Rules
 
