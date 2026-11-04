@@ -28,7 +28,19 @@ const motion = common.extend({
   rings: z.number().int().min(1).max(8).default(3),
 });
 
-export const sceneSchema = z.discriminatedUnion('type', [lounge, motion]);
+// Local, public/ relative assets only; do not allow URLs, absolute paths, or traversal.
+export const imageAssetSchema = z.string()
+  .regex(/^[A-Za-z0-9/_\-.]+\.(png|jpe?g|webp|svg)$/i)
+  .refine((path) => !path.startsWith('/') && !path.split('/').some((part) => part === '.' || part === '..' || !part), 'Expected a safe public/ relative path');
+
+const imageTransition = common.extend({
+  type: z.literal('image-transition'),
+  presetId: z.literal('fade-in-entrance'),
+  presetVersion: z.literal('1.0.0'),
+  inputs: z.object({imageA: imageAssetSchema, imageB: imageAssetSchema}).strict(),
+});
+
+export const sceneSchema = z.discriminatedUnion('type', [lounge, motion, imageTransition]);
 export const projectSchema = z.object({
   version: z.literal('1.0'),
   id: z.string().min(1),
