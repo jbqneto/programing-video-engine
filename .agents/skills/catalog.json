@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "vendor": "Scenario Labs",
+  "repository": "https://github.com/scenario-labs/skills",
+  "upstreamCommit": "e24bc7d40be97b428e7b9fd467c415366e1dd974",
+  "license": "MIT",
+  "policy": "These are third-party references and opt-in local toolkits. Their upstream documentation may mention Scenario cloud services; this engine does not require or automatically invoke those services.",
+  "skills": [
+    {
+      "id": "scenario-motion-loops",
+      "category": "motion",
+      "description": "Deterministic 2D Canvas motion loops, seam checks, stills and FFmpeg export.",
+      "runtime": "Node.js, optional Playwright, ffmpeg/ffprobe",
+      "sourcePath": "skills/scenario-motion-loops",
+      "localEntry": "scripts/render-loop.mjs",
+      "skillFile": ".agents/skills/scenario-motion-loops/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/scenario-motion-loops"
+    },
+    {
+      "id": "scenario-video-color-grade",
+      "category": "postproduction",
+      "description": "Deterministic color grading, LUTs and reference color matching for existing footage.",
+      "runtime": "Python 3, numpy, scipy, Pillow, ffmpeg",
+      "sourcePath": "skills/scenario-video-color-grade",
+      "localEntry": "scripts/render_looks.py",
+      "skillFile": ".agents/skills/scenario-video-color-grade/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/scenario-video-color-grade"
+    },
+    {
+      "id": "scenario-blender-expert",
+      "category": "blender",
+      "description": "Blender automation, scene audits, review sheets and Blender Python reliability.",
+      "runtime": "Blender 5.2-era bpy API (optional)",
+      "sourcePath": "skills/dcc/blender/scenario-blender-expert",
+      "localEntry": "scripts/bx_audit.py",
+      "skillFile": ".agents/skills/scenario-blender-expert/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/dcc/blender/scenario-blender-expert"
+    },
+    {
+      "id": "scenario-blender-export",
+      "category": "blender",
+      "description": "GLB/glTF export for Three.js with round-trip validation of meshes and maps.",
+      "runtime": "Blender 5.2-era bpy API (optional)",
+      "sourcePath": "skills/dcc/blender/scenario-blender-export",
+      "localEntry": "scripts/bx_export.py",
+      "skillFile": ".agents/skills/scenario-blender-export/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/dcc/blender/scenario-blender-export"
+    },
+    {
+      "id": "scenario-blender-lighting-rendering",
+      "category": "blender",
+      "description": "Lighting rigs, HDRI, Cycles/EEVEE, EXR and cinematic look-quality auditing.",
+      "runtime": "Blender 5.2-era bpy API (optional)",
+      "sourcePath": "skills/dcc/blender/scenario-blender-lighting-rendering",
+      "localEntry": "scripts/bx_light.py",
+      "skillFile": ".agents/skills/scenario-blender-lighting-rendering/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/dcc/blender/scenario-blender-lighting-rendering"
+    },
+    {
+      "id": "scenario-blender-previs-storyboard",
+      "category": "blender",
+      "description": "Story beats, framing, blocking, contact sheets and animatics.",
+      "runtime": "Blender 5.2-era bpy API (optional)",
+      "sourcePath": "skills/dcc/blender/scenario-blender-previs-storyboard",
+      "localEntry": "scripts/bx_previs.py",
+      "skillFile": ".agents/skills/scenario-blender-previs-storyboard/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/dcc/blender/scenario-blender-previs-storyboard"
+    },
+    {
+      "id": "scenario-blender-animation",
+      "category": "blender",
+      "description": "Deterministic keyframing, animation curves, timing, arcs and playblast review.",
+      "runtime": "Blender 5.2-era bpy API (optional)",
+      "sourcePath": "skills/dcc/blender/scenario-blender-animation",
+      "localEntry": "scripts/bx_anim.py",
+      "skillFile": ".agents/skills/scenario-blender-animation/SKILL.md",
+      "upstreamUrl": "https://github.com/scenario-labs/skills/tree/e24bc7d40be97b428e7b9fd467c415366e1dd974/skills/dcc/blender/scenario-blender-animation"
+    }
+  ]
+}

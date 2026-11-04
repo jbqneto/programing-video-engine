@@ -18,7 +18,9 @@
     "mcp:stdio": "tsx scripts/mcp/stdio.ts",
     "mcp:http": "tsx scripts/mcp/http.ts",
     "mcp:check": "tsx scripts/mcp/check.ts",
-    "workbench": "node scripts/workbench.mjs"
+    "workbench": "node scripts/workbench.mjs",
+    "skills": "node scripts/skills.mjs",
+    "skills:check": "node scripts/skills.mjs check"
   },
   "dependencies": {
     "@react-three/fiber": "^9.0.0",

@@ -17,6 +17,10 @@ Build reproducible 2D/3D videos from validated JSON. Support an agent-first work
 - \`src/projects/\`: versioned JSON examples. Agent edits are saved by default to \`out/workbench-project.json\`.
 - \`docs/LEARNINGS.md\`: incremental log of verified shortcuts, experiments and limitations.
 
+## Agent skills
+
+Use `list_agent_skills` (MCP), `npm run skills -- list`, or `.agents/skills/catalog.json` to discover optional skills. Use `get_agent_skill` for the relevant skill's instructions and inspect its referenced scripts. **Never load all seven skills into an agent prompt at once**. Vendored skill texts sometimes describe optional, paid Scenario cloud calls; only local workflow steps are allowed by default. Explicit authorization is required for paid/cloud operations, unexpected file writes or executing Python in a live Blender session. Do not edit vendor files to record internal learnings; update `docs/LEARNINGS.md` and our own versioned presets instead.
+
 ## Agent protocol
 
 1. Call \`list_presets\` before rebuilding known effects.
