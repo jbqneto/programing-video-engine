@@ -1,13 +1,14 @@
 # Video Production Engine — MVP 0.1
 
-Protótipo declarativo para gerar vídeos 3D com **Remotion + Three.js / React Three Fiber**. O projeto é configurado por JSON e prepara a separação entre especificação de cenas e renderizadores.
+A declarative prototype for generating 3D videos with **Remotion + Three.js / React Three Fiber**. Projects are JSON files, with scene specifications kept separate from their renderers.
 
-## Requisitos
-- Node.js >= 22 e npm
-- Chromium/WebGL disponível; GPU recomendada (render por software pode ser lento)
-- FFmpeg para pós-produção
+## Requirements
 
-## Executar
+- Node.js >= 22 and npm
+- Chromium with WebGL; a GPU is recommended because software rendering can be slow
+- FFmpeg for video encoding
+
+## Run
 
 ```bash
 npm install
@@ -17,54 +18,54 @@ npm run studio
 npm run render -- --project src/projects/afterhours-demo.json --out out/afterhours-demo.mp4
 ```
 
-O `npm run studio` permite inspecionar a composição `CinematicDemo`. O `npm run render` gera MP4 H.264 1280x720, 30 fps, com 9 segundos (configuração inicial). O renderizador usa `--gl angle`, necessário em instalações com Remotion 4 + Three.js; altere em ambiente Linux sem GPU caso seja preciso usar `swangle`.
+`npm run studio` opens the `CinematicDemo` composition. `npm run render` creates a 1280x720 H.264 MP4 at 30 fps, 9 seconds long with the current sample project. Rendering uses `--gl angle`, which is required for Remotion 4 with Three.js in some environments. On Linux without a GPU, `swangle` may work better.
 
-### Personalizar
+## Customize
 
-Edite `src/projects/afterhours-demo.json`:
+Edit `src/projects/afterhours-demo.json`:
 
-- `width`, `height`, `fps`: formato de saída
-- `scenes[]`: cenas sequenciais, duração em **frames**
-- `lounge-3d`: ambiente 3D, neve determinística, câmera lenta
-- `motion-3d`: anéis metálicos tridimensionais e tipografia
-- `palette`, `camera`, `snowfall`, `rings`, `title`: parâmetros por cena
-- `audio`: opcional. Ex.: `"audio": {"src": "audio/trilha.mp3", "volume": 0.8}`; colocar arquivo em `public/audio/`.
+- `width`, `height`, `fps`: output format
+- `scenes[]`: sequential scenes with durations in **frames**
+- `lounge-3d`: 3D environment, deterministic snowfall, and a slow camera move
+- `motion-3d`: metallic 3D rings and typography
+- `palette`, `camera`, `snowfall`, `rings`, `title`: per-scene settings
+- `audio`: optional audio, for example `"audio": {"src": "audio/music.mp3", "volume": 0.8}`; place the file under `public/audio/`
 
-O comando valida o JSON antes de renderizar. `calculateMetadata()` deriva resolução, fps e duração diretamente das propriedades do projeto. A renderização de cada frame depende do **frame absoluto da cena** e de um **seed**, nunca de tempo de relógio nem de valores aleatórios não determinísticos.
+The render command validates the JSON first. `calculateMetadata()` derives resolution, frame rate, and duration from the project properties. Each frame is determined by the **scene-local frame number** and a **seed**, never by wall-clock time or non-deterministic random values.
 
-## Estrutura
+## Project structure
 
 ```
-src/lib/schema.ts            # contrato JSON e validação Zod
-src/lib/math.ts              # animação determinística
-src/projects/*.json          # projetos e parâmetros
-src/scenes/Lounge3D.tsx      # cenário realista estilizado + neve + câmera
-src/scenes/Motion3D.tsx      # objetos 3D cinéticos + títulos
-src/Video.tsx                # timeline e composição
-src/Root.tsx                 # metadados dinâmicos
-scripts/validate.ts          # verificação CLI
-scripts/render.ts            # execução CLI (adaptador Remotion)
-remotion.config.ts           # configuração do renderer WebGL
+src/lib/schema.ts            # JSON contract and Zod validation
+src/lib/math.ts              # deterministic animation helpers
+src/projects/*.json          # projects and settings
+src/scenes/Lounge3D.tsx      # stylized environment, snowfall, and camera
+src/scenes/Motion3D.tsx      # kinetic 3D objects and titles
+src/Video.tsx                # timeline and composition
+src/Root.tsx                 # dynamic metadata
+scripts/validate.ts          # validation CLI
+scripts/render.ts            # Remotion render CLI adapter
+remotion.config.ts           # WebGL renderer configuration
 ```
 
-## Roteiro para transformar em produto
+## Product roadmap
 
-1. Criar um registro de `SceneType` e `RenderAdapter` (`remotion`, `hyperframes`, `blender`), com schemas separados para efeitos/câmeras/objetos.
-2. Cache de assets por hash; `manifest.json` por render com seed, versões, fps e id de projeto.
-3. API `POST /render-jobs`, fila BullMQ/Redis, worker isolado, progresso e cancelamento, limitação por memória/GPU.
-4. Preview parcial (still/5s) antes de renderizar 1080p ou 4K.
-5. Render de cenas para arquivos intermediários; composição final via FFmpeg, trilhas, legendas SRT/VTT.
-6. Sandbox de entrada de agentes: schemas rígidos, URL/media local pré-validada, limites de duração/cena e memória.
+1. Add a `SceneType` and `RenderAdapter` registry (`remotion`, `hyperframes`, `blender`), with separate schemas for effects, cameras, and objects.
+2. Cache assets by hash and write a `manifest.json` for each render with its seed, versions, frame rate, and project ID.
+3. Add a `POST /render-jobs` API, BullMQ/Redis queue, isolated worker, progress reporting, cancellation, and memory/GPU limits.
+4. Render a still or five-second preview before the 1080p or 4K output.
+5. Render scenes to intermediate files and compose the final video with FFmpeg, audio tracks, and SRT/VTT subtitles.
+6. Sandbox agent input with strict schemas, pre-validated local media, and scene duration and memory limits.
 
-## Limitações reais
+## Current limitations
 
-- Este é um **MVP local**, não um render farm ou uma API multiusuário.
-- A sala usa primitivas 3D estilizadas. **Não é fotorrealismo**: para isso, acrescentar assets glTF/HDRI e cenas Blender com iluminação fisicamente baseada.
-- O ZIP não inclui música nem modelos com direitos de terceiros.
-- As dependências npm precisam ser instaladas na máquina do usuário. Não foram obtidas neste ambiente sem rede para o registro npm; portanto ainda **não foi executado um render Remotion end-to-end** aqui.
-- Para Linux server-side, poderá ser necessário ajustar renderer WebGL/Chromium e segmentar vídeos longos.
+- This is a **local MVP**, not a render farm or multi-user API.
+- The room uses stylized 3D primitives. It is **not photorealistic**; that would require glTF/HDRI assets or Blender scenes with physically based lighting.
+- The repository does not include music or third-party models.
+- Install npm dependencies on the target machine. This environment did not have the registry dependencies available, so a full end-to-end Remotion render has not been run here.
+- Linux server rendering may require WebGL/Chromium adjustments and chunking for long videos.
 
-## Fontes
+## References
 
 - https://www.remotion.dev/docs/three
 - https://www.remotion.dev/docs/three-canvas
@@ -72,4 +73,4 @@ remotion.config.ts           # configuração do renderer WebGL
 - https://github.com/heygen-com/hyperframes
 - https://docs.blender.org/manual/en/4.5/advanced/command_line/index.html
 
-Consulte `docs/architecture.md` para o desenho da futura API, fila de jobs, interfaces de render e politicas de isolamento.
+See [docs/architecture.md](docs/architecture.md) for the proposed API, job queue, render interfaces, and isolation policies.

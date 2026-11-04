@@ -17,7 +17,7 @@ try {
   const propsFile = join(dir, 'props.json');
   writeFileSync(propsFile, JSON.stringify({project}));
   mkdirSync(dirname(outputPath), {recursive: true});
-  console.log(`[engine] ${project.scenes.length} cenas; ${projectFrames(project)} frames; saida: ${outputPath}`);
+  console.log(`[engine] ${project.scenes.length} scenes; ${projectFrames(project)} frames; output: ${outputPath}`);
   const child = spawnSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', [
     '--no-install', 'remotion', 'render', 'src/index.ts', 'CinematicDemo', outputPath,
     '--props', propsFile, '--gl', 'angle', '--codec', 'h264', '--pixel-format', 'yuv420p', '--concurrency', '2'

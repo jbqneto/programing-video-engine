@@ -1,6 +1,6 @@
 import {z} from 'zod';
 
-const hex = z.string().regex(/^#[a-fA-F0-9]{6}$/, 'Cor HEX #RRGGBB obrigatoria');
+const hex = z.string().regex(/^#[a-fA-F0-9]{6}$/, 'Expected a HEX color in #RRGGBB format');
 const palette = z.object({
   background: hex,
   accent: hex,
@@ -37,12 +37,12 @@ export const projectSchema = z.object({
   width: z.number().int().min(320).max(7680),
   height: z.number().int().min(240).max(4320),
   scenes: z.array(sceneSchema).min(1),
-  // Caminho relativo ao diretorio public/, ex.: "audio/music.mp3".
+  // Path relative to the public/ directory, for example "audio/music.mp3".
   audio: z.object({src: z.string().min(1), volume: z.number().min(0).max(1).default(0.8)}).optional(),
 }).superRefine((project, ctx) => {
   const ids = project.scenes.map(s => s.id);
   if (new Set(ids).size !== ids.length) {
-    ctx.addIssue({code: 'custom', path: ['scenes'], message: 'IDs de cenas devem ser unicos'});
+    ctx.addIssue({code: 'custom', path: ['scenes'], message: 'Scene IDs must be unique'});
   }
 });
 

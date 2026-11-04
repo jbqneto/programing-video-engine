@@ -25,7 +25,7 @@ const Box: React.FC<{position: [number, number, number]; scale: [number, number,
 );
 
 const Snow: React.FC<{frame: number; fps: number; count: number; speed: number; seed: number}> = ({frame, fps, count, speed, seed}) => {
-  // Posicoes calculadas por seed e frame, sem deltaTime nem Math.random().
+  // Positions are derived from the seed and frame, without deltaTime or Math.random().
   const flakes = useMemo(() => Array.from({length: count}, (_, i) => ({
     x: lerp(0.35, 4.8, hash(seed + i * 2.11)),
     y: hash(seed + i * 5.13),
@@ -55,12 +55,12 @@ const LoungeEnvironment: React.FC<{scene: Lounge; frame: number; fps: number}> =
     <directionalLight position={[-5, 9, 6]} intensity={1.0} color="#efcb9e"/>
     <pointLight position={[-2.5, 3.2, -1]} intensity={46} color={palette.accent} distance={12}/>
     <pointLight position={[3.4, 3.4, -4.4]} intensity={15} color="#a5c9ff" distance={9}/>
-    {/* Sala, profundidade Z negativa */}
+    {/* Room, with negative Z depth */}
     <Box position={[0, -0.17, -1.5]} scale={[14, 0.3, 14]} color="#31251d" roughness={0.47}/>
     <Box position={[-3.8, 2.3, -5.05]} scale={[6.7, 4.7, 0.12]} color="#2b201b"/>
     <Box position={[6.85, 2.3, -1.5]} scale={[0.15, 4.7, 14]} color="#251b19"/>
     <Box position={[-6.85, 2.3, -1.5]} scale={[0.15, 4.7, 14]} color="#251b19"/>
-    {/* Janela ampla de vidro azul, neve do lado de fora */}
+    {/* Large blue glass window with snow outside */}
     <mesh position={[2.45, 2.25, -5.25]}>
       <boxGeometry args={[5.1, 4.2, 0.07]}/>
       <meshPhysicalMaterial color="#355877" transparent opacity={0.28} metalness={0.18} roughness={0.15} depthWrite={false}/>
@@ -72,13 +72,13 @@ const LoungeEnvironment: React.FC<{scene: Lounge; frame: number; fps: number}> =
     <Box position={[2.48, 0.18, -5]} scale={[5.3, 0.2, 0.2]} color="#4a3020"/>
     <Box position={[2.5, 2.3, -5]} scale={[0.1, 4.2, 0.2]} color="#69452c"/>
     <Box position={[2.48, 2.3, -5]} scale={[5.2, 0.11, 0.2]} color="#69452c"/>
-    {/* Lounge e bancada */}
+    {/* Lounge and table */}
     <Box position={[-3.15, 0.55, -2.8]} scale={[4.45, 1.05, 1.5]} color={palette.secondary}/>
     <Box position={[-3.15, 1.18, -3.39]} scale={[4.45, 1.65, 0.36]} color={palette.secondary}/>
     <Box position={[-1.25, 0.6, -0.72]} scale={[2.25, 0.14, 1.35]} color="#7c5130" metalness={0.13} roughness={0.27}/>
     <Box position={[-1.9, 0.25, -0.72]} scale={[0.18, 0.6, 0.18]} color="#3f2a1e"/>
     <Box position={[-0.6, 0.25, -0.72]} scale={[0.18, 0.6, 0.18]} color="#3f2a1e"/>
-    {/* Vela e luz pontual */}
+    {/* Candle and point light */}
     <mesh position={[-1.1, 0.75, -0.68]}>
       <cylinderGeometry args={[0.065, 0.07, 0.22, 16]}/>
       <meshStandardMaterial color="#f7e5c4" emissive="#c08335" emissiveIntensity={0.15}/>
@@ -87,7 +87,7 @@ const LoungeEnvironment: React.FC<{scene: Lounge; frame: number; fps: number}> =
       <sphereGeometry args={[0.055, 12, 12]}/>
       <meshBasicMaterial color="#ffd78e"/>
     </mesh>
-    {/* Abajur simplificado */}
+    {/* Simplified floor lamp */}
     <mesh position={[-5.55, 2.15, -3.25]}>
       <coneGeometry args={[0.48, 0.65, 16, 1, true]}/>
       <meshStandardMaterial side={2} color="#d6a66d" emissive="#8b5520" emissiveIntensity={0.65}/>

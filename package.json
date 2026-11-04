@@ -2,7 +2,7 @@
   "name": "video-production-engine-mvp",
   "version": "0.1.0",
   "private": true,
-  "description": "Motor declarativo para videos cinematograficos e motion graphics 3D",
+  "description": "Declarative engine for cinematic videos and 3D motion graphics",
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",

@@ -1,20 +1,20 @@
-# Video Production Engine — arquitetura de evolucao
+# Video Production Engine — Evolution Architecture
 
-## Objetivo e nao-objetivos
+## Goals and non-goals
 
-**Objetivo:** especificar vídeos em JSON e renderizar cenas heterogêneas com timeline determinística, registrando os artefatos produzidos. **Não-objetivo no MVP:** construir um editor do zero, gerar imagens fotorrealistas automaticamente a partir de prompts, renderizar GPU remoto ou executar código de terceiros.
+**Goal:** describe videos in JSON and render heterogeneous scenes on a deterministic timeline, recording the produced artifacts. **MVP non-goals:** building an editor from scratch, automatically generating photorealistic images from prompts, remote GPU rendering, or executing third-party code.
 
-## Contratos propostos (v0.2, nao implementados neste MVP)
+## Proposed contracts (v0.2, not implemented in this MVP)
 
-`POST /api/render-jobs` -> aceita `{projectId, engine, preset, priority}`. Retorna `202 {jobId, status:"queued"}`. O usuário define um projeto por JSON e faz upload de assets previamente.
+`POST /api/render-jobs` accepts `{projectId, engine, preset, priority}` and returns `202 {jobId, status:"queued"}`. A user defines a project in JSON and uploads its assets beforehand.
 
-`GET /api/render-jobs/:id` -> `{jobId,status,progress:{framesDone,framesTotal},startedAt,finishedAt,artifacts:[{kind,path,sha256}]}`. `DELETE /api/render-jobs/:id` solicita cancelamento.
+`GET /api/render-jobs/:id` returns `{jobId,status,progress:{framesDone,framesTotal},startedAt,finishedAt,artifacts:[{kind,path,sha256}]}`. `DELETE /api/render-jobs/:id` requests cancellation.
 
-`POST /api/projects/:id/preview` -> render de 1 frame (thumbnail) ou trecho limitado, custo computacional menor que vídeo final.
+`POST /api/projects/:id/preview` renders one frame (a thumbnail) or a limited clip at lower compute cost than the final video.
 
-Estados da fila: `queued -> validating -> preparing -> rendering -> muxing -> done` (ou `failed`, `cancelled`). Operações idempotentes por hash de projeto + versões de assets + versão da engine.
+Queue states: `queued -> validating -> preparing -> rendering -> muxing -> done` (or `failed`, `cancelled`). Operations are idempotent by project hash + asset versions + engine version.
 
-## Adapters de render
+## Render adapters
 
 ```ts
 export type RenderInput = {projectId: string; sceneId: string; fps: number; width: number; height: number; outputDir: string};
@@ -26,26 +26,26 @@ export interface RenderAdapter {
 }
 ```
 
-Esse contrato e **desenho para proxima etapa**, nao codigo implementado. Render por cena permite misturar ferramentas com composição final via FFmpeg. Todos os renderizadores devem operar com fps e dimensões fixas e produzir intermediários consistentes.
+This contract is a **proposal for a future step**, not implemented code. Per-scene rendering allows tools to be mixed, with final composition through FFmpeg. All renderers should use fixed frame rates and dimensions and produce consistent intermediate files.
 
-## Observabilidade e qualidade
+## Observability and quality
 
-- Logs estruturados com `projectId`, `jobId`, `sceneId`, versão de engine, tempo total, CPU/GPU, pico de memória, exit code.
-- Arquivos `manifest.json` com parâmetros, hashes SHA-256 e seed; cada artefato deve ser reprodutível.
-- Render de prévia de 1-3 segundos, em 480p, antes de 1080p/4K.
-- Teste de consistência `frame(100)` em renderizações repetidas.
-- Limites explícitos de JSON por job e whitelist de tipos/caminhos; bloquear URLs remotas não aprovadas e scripts arbitrários vindos de agentes.
-- Fail-fast em assets ausentes, versão não suportada de schema e codecs indisponíveis.
+- Structured logs with `projectId`, `jobId`, `sceneId`, engine version, total time, CPU/GPU usage, peak memory, and exit code.
+- `manifest.json` files with parameters, SHA-256 hashes, and seed; each artifact should be reproducible.
+- Render a one-to-three-second preview at 480p before 1080p/4K.
+- Check that repeated renders of `frame(100)` are consistent.
+- Set explicit JSON size limits per job and allowlist types and paths; block unapproved remote URLs and arbitrary scripts from agents.
+- Fail fast on missing assets, unsupported schema versions, and unavailable codecs.
 
-## Modos de operação
+## Operating modes
 
-- **Local**: Node.js + Remotion Studio + FFmpeg na máquina de desenvolvimento.
-- **Worker**: API/queue na VPS e renderização pesada em máquina com GPU, quando necessário.
-- **Blender**: exportação de PNG/EXR ou H.264, importado para timeline Remotion/FFmpeg; preferir PNG/EXR quando composição e alpha forem necessários.
-- **HyperFrames**: projetos HTML e animações seekable, úteis para geração por agentes; introduzir após teste de fidelidade e estabilidade.
+- **Local:** Node.js + Remotion Studio + FFmpeg on the development machine.
+- **Worker:** API/queue on a VPS and heavy rendering on a GPU machine when needed.
+- **Blender:** export PNG/EXR or H.264 for import into a Remotion/FFmpeg timeline; prefer PNG/EXR when compositing or alpha is needed.
+- **HyperFrames:** HTML projects and seekable animations, useful for agent-generated work; adopt after testing fidelity and stability.
 
-## Estrutura de biblioteca de cenas
+## Scene library structure
 
-Cenas versionadas por `type`, `version`, `defaults` e `schema`: `lounge-3d`, `motion-3d`, `book-opening`, `parallax-2_5d`, `map-route`, `caption-overlay`, `transition`.
+Scenes are versioned by `type`, `version`, `defaults`, and `schema`: `lounge-3d`, `motion-3d`, `book-opening`, `parallax-2_5d`, `map-route`, `caption-overlay`, and `transition`.
 
-Separar `scene.spec` (dados) de `scene.renderer` (código) permite testar presets, trocar backend e automatizar a produção sem reescrever animações. A implementação atual contém apenas os dois primeiros tipos.
+Separating `scene.spec` (data) from `scene.renderer` (code) makes it possible to test presets, switch backends, and automate production without rewriting animations. The current implementation contains only the first two scene types.

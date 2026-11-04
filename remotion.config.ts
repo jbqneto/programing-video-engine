@@ -1,6 +1,6 @@
 import {Config} from '@remotion/cli/config';
 
-// Necessario no Remotion 4 em ambientes com Three.js/WebGL.
+// Required by Remotion 4 with Three.js/WebGL in some environments.
 Config.setChromiumOpenGlRenderer('angle');
 Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);

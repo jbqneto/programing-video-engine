@@ -33,7 +33,7 @@ export const Motion3D: React.FC<{scene: MotionScene}> = ({scene}) => {
     <ThreeCanvas width={width} height={height} camera={{position:[0,0,6.5], fov: 48}} style={{width, height}}>
       <Sculpture frame={frame} scene={scene}/>
     </ThreeCanvas>
-    <AbsoluteFill style={{display:'flex', alignItems:'flex-start', justifyContent:'flex-end', padding:'0 0 9% 7%', pointerEvents:'none', opacity: fade}}>
+    <AbsoluteFill style={{display:'flex', flexDirection:'column', alignItems:'flex-start', justifyContent:'flex-end', padding:'0 0 9% 7%', pointerEvents:'none', opacity: fade}}>
       <div style={{fontFamily:'Georgia, serif', fontSize:width*0.063, color:scene.palette.text, letterSpacing: width*0.002, textShadow:'0 2px 30px #000'}}>{scene.title}</div>
       <div style={{fontFamily:'Arial, sans-serif', fontSize:width*0.014, color:scene.palette.accent, marginTop: width*0.01, letterSpacing: width*0.001}}>{scene.subtitle}</div>
     </AbsoluteFill>

@@ -16,4 +16,4 @@ assert.equal(new Set(p.scenes.map(s => s.id)).size, p.scenes.length);
 assert.ok(p.scenes.every(s=>s.durationFrames > 0 && Object.values(s.palette).every(v=>/^#[0-9a-fA-F]{6}$/.test(v))));
 assert.ok(existsSync('src/scenes/Lounge3D.tsx'));
 assert.ok(existsSync('src/scenes/Motion3D.tsx'));
-console.log('PASS smoke: 2 cenas, 270 frames, 9s a 30 fps; manifest e arquivos consistentes');
+console.log('PASS smoke: 2 scenes, 270 frames, 9s at 30 fps; project and files are consistent');
