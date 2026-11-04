@@ -14,7 +14,7 @@ npm run check:versions
 npm run workbench
 ```
 
-CI tests both supported Node lines using the current GitHub Actions toolchain. Remotion packages are pinned to one exact matching version, while TypeScript, Vite and Three.js are updated to recent stable releases. The repository still needs a committed `package-lock.json` for fully reproducible transitive dependency installation; generate it with `npm install` and commit it after validating the dependency upgrade.
+CI tests both supported Node lines using the current GitHub Actions toolchain. Dependabot proposes grouped npm and GitHub Actions updates weekly; these are review-only, never auto-merged. Remotion packages are pinned to one exact matching version, while TypeScript, Vite and Three.js are updated to recent stable releases. The repository still needs a committed `package-lock.json` for fully reproducible transitive dependency installation; generate it with `npm install` and commit it after validating the dependency upgrade.
 
 ## Requirements
 

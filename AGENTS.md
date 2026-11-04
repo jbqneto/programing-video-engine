@@ -36,6 +36,7 @@ Build reproducible 2D/3D videos from validated JSON. Support an agent-first work
 - Keep runtime TypeScript declarations compatible with the oldest supported Node (24), and set `compilerOptions.types=["node"]` for TypeScript 7.
 - Generate and commit the npm lockfile after the dependency migration so the CI can use `npm ci`; never auto-accept major upgrades or use `npm audit fix --force`.
 - CI must test Node 24 and 26, the UI build, the MCP transports and the offline test suite.
+- Review Dependabot PRs weekly; never automatically merge React/Three, MCP protocol or Remotion updates without compatibility checks.
 
 ## Rules
 

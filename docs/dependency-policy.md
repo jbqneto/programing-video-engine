@@ -10,6 +10,10 @@ This repository is public and agent-driven. Prefer **recent stable versions**, b
 - Node 22 and odd-numbered or prerelease Node versions are intentionally excluded.
 - The repository's `engines.node` and `.npmrc` reject unsupported runtimes during installation.
 
+## Automated update proposals
+
+Dependabot checks npm and GitHub Actions dependencies every Monday and opens reviewable pull requests. The Remotion family is grouped to keep all patch versions aligned; React/Three.js and MCP dependencies are grouped separately. **Never auto-merge:** each PR must pass the Node 24/26 CI matrix and visual WebGL/MP4 smoke checks if the renderer changed. Review any security advisories separately.
+
 ## Direct dependencies as of 2026-11-04
 
 | Technology | Policy |
