@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+<defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#071d30"/><stop offset="1" stop-color="#315270"/></linearGradient><radialGradient id="light"><stop stop-color="#edbe76"/><stop offset="1" stop-color="#edbe76" stop-opacity="0"/></radialGradient></defs>
+<rect width="1280" height="720" fill="url(#sky)"/><circle cx="900" cy="260" r="310" fill="url(#light)" opacity=".46"/>
+<path d="M0 590L380 410 600 475 950 285 1280 430V720H0" fill="#111c2b"/><path d="M0 630L310 500 620 560 1030 390 1280 525V720H0" fill="#1d3544"/>
+<text x="70" y="620" font-family="Georgia,serif" font-size="65" fill="#f5d9a6">SCENE A</text>
+<text x="74" y="665" font-family="Arial,sans-serif" letter-spacing="8" font-size="20" fill="#d4dbe2">CINEMATIC TRANSITION DEMO</text></svg>

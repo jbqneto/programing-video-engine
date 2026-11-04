@@ -23,3 +23,7 @@ jobs:
         run: npm run validate
       - name: Type check
         run: npm run typecheck
+      - name: Build preview UI
+        run: npm run ui:build
+      - name: Verify stdio and local HTTP MCP
+        run: npm run mcp:check
