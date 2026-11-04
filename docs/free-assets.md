@@ -16,7 +16,7 @@ The engine supports local assets under \`public/\`. Asset repositories listed be
 
 ## CLI usage
 
-Node.js 22+ is required. The catalog CLI uses native \`fetch\` and does not require an API key for public Poly Haven or ambientCG data.
+Node.js 24 or 26 LTS is required. The catalog CLI uses native \`fetch\` and does not require an API key for public Poly Haven or ambientCG data.
 
 \`\`\`bash
 npm run assets -- search polyhaven "vintage chair" --type models --limit 10

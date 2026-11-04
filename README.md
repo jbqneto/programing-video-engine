@@ -2,9 +2,23 @@
 
 A declarative prototype for generating 3D videos with **Remotion + Three.js / React Three Fiber**. Projects are JSON files, with scene specifications kept separate from their renderers.
 
+## Supported Node.js and dependency versions
+
+Use **Node.js 26 LTS** for development or **Node.js 24 LTS** for compatibility. Node 22 and prereleases are intentionally unsupported. See [Runtime and Dependency Policy](docs/dependency-policy.md).
+
+```bash
+nvm install 26
+nvm use 26
+npm install
+npm run check:versions
+npm run workbench
+```
+
+CI tests both supported Node lines using the current GitHub Actions toolchain. Dependabot proposes grouped npm and GitHub Actions updates weekly; these are review-only, never auto-merged. Remotion packages are pinned to one exact matching version, while TypeScript, Vite and Three.js are updated to recent stable releases. The repository still needs a committed `package-lock.json` for fully reproducible transitive dependency installation; generate it with `npm install` and commit it after validating the dependency upgrade.
+
 ## Requirements
 
-- Node.js >= 22 and npm
+- Node.js 24 or 26 (Node 26 LTS recommended) and npm
 - Chromium with WebGL; a GPU is recommended because software rendering can be slow
 - FFmpeg for video encoding
 
@@ -24,7 +38,7 @@ Verify both MCP transports: `npm run mcp:check`. Never expose the unauthenticate
 
 ## Quick start
 
-After installing Node.js 22+ and npm, run:
+After installing Node.js 24/26 LTS and npm, run:
 
 ```bash
 npm install && npm run demo
