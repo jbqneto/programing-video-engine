@@ -20,7 +20,7 @@ try {
   console.log(`[engine] ${project.scenes.length} scenes; ${projectFrames(project)} frames; output: ${outputPath}`);
   const child = spawnSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', [
     '--no-install', 'remotion', 'render', 'src/index.ts', 'CinematicDemo', outputPath,
-    '--props', propsFile, '--gl', 'angle', '--codec', 'h264', '--pixel-format', 'yuv420p', '--concurrency', '2'
+    '--props', propsFile, '--gl', process.env.REMOTION_GL ?? 'angle', '--codec', 'h264', '--pixel-format', 'yuv420p', '--concurrency', '2'
   ], {cwd: process.cwd(), stdio: 'inherit', env: process.env});
   if (child.error) throw child.error;
   process.exitCode = child.status ?? 1;
