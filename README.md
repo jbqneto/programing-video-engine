@@ -8,6 +8,16 @@ A declarative prototype for generating 3D videos with **Remotion + Three.js / Re
 - Chromium with WebGL; a GPU is recommended because software rendering can be slow
 - FFmpeg for video encoding
 
+## Quick start
+
+After installing Node.js 22+ and npm, run:
+
+```bash
+npm install && npm run demo
+```
+
+This command runs offline checks, validates the sample JSON, type-checks the TypeScript project, and then renders `out/afterhours-demo.mp4`. The rendering itself uses local Chromium/WebGL and may need a supported GPU driver. On Linux, you can try `REMOTION_GL=swangle npm run demo` if the default GL backend fails.
+
 ## Run
 
 ```bash
@@ -44,9 +54,26 @@ src/scenes/Motion3D.tsx      # kinetic 3D objects and titles
 src/Video.tsx                # timeline and composition
 src/Root.tsx                 # dynamic metadata
 scripts/validate.ts          # validation CLI
+scripts/assets.mjs            # Poly Haven / ambientCG CLI
+tests/assets.test.mjs        # offline catalog tests
 scripts/render.ts            # Remotion render CLI adapter
 remotion.config.ts           # WebGL renderer configuration
 ```
+
+## Free assets catalog
+
+The engine includes a CLI to discover free CC0 models, PBR textures and HDRIs from **Poly Haven** and **ambientCG**:
+
+```bash
+npm run assets -- search polyhaven "vintage chair" --type models
+npm run assets -- files polyhaven ArmChair_01
+npm run assets -- download polyhaven ArmChair_01 --format glb --resolution 1k
+npm run assets -- search ambientcg "wood" --type material
+```
+
+Poly Haven downloads are stored under `public/assets/polyhaven/` with local provenance metadata and hash verification. **Powered by Poly Haven.** Poly Haven requires visible attribution when its live API is integrated into a product; the assets themselves are CC0. The ambientCG v3 integration currently searches and inspects available download metadata, but does not auto-download. Integration of downloaded GLBs into rendered scenes is a separate milestone.
+
+See [Free 3D asset sources, licenses and CLI](docs/free-assets.md) for the full catalog, licensing precautions, and examples. The public repository does not currently include a code LICENSE file: select one explicitly before accepting external contributions.
 
 ## Product roadmap
 
