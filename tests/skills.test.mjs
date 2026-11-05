@@ -5,7 +5,7 @@ import {spawnSync} from 'node:child_process';
 test('vendored agent skills are complete, properly named and attributed', () => {
   const r = spawnSync(process.execPath, ['scripts/skills.mjs', 'check'], {encoding: 'utf8'});
   assert.equal(r.status, 0, r.stderr);
-  assert.match(r.stdout, /PASS 7 vendored Scenario skills/);
+  assert.match(r.stdout, /PASS 7 vendored Scenario skills and 3 first-party skills/);
 });
 
 test('agent skill catalog exposes the chosen domain skills', () => {
@@ -13,6 +13,7 @@ test('agent skill catalog exposes the chosen domain skills', () => {
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /scenario-motion-loops/);
   assert.match(r.stdout, /scenario-blender-export/);
+  assert.match(r.stdout, /pve-seamless-loops/);
 });
 
 test('agent skill reader rejects unknown names', () => {

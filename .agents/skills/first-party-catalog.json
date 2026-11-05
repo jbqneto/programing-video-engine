@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "kind": "first-party",
+  "skills": [
+    {
+      "id": "pve-seamless-loops",
+      "category": "quality",
+      "description": "Design and validate deterministic seamless Remotion video loops, check encoded seam metrics, and inspect loop frames.",
+      "version": "1.0.0",
+      "skillFile": ".agents/skills/pve-seamless-loops/SKILL.md"
+    },
+    {
+      "id": "pve-motion-presets",
+      "category": "presets",
+      "description": "Discover, apply and version small parameterized Remotion animation presets using MCP.",
+      "version": "1.0.0",
+      "skillFile": ".agents/skills/pve-motion-presets/SKILL.md"
+    },
+    {
+      "id": "pve-visual-review",
+      "category": "review",
+      "description": "Build encoded-video contact sheets, inspect exact frames and iterate with evidence.",
+      "version": "1.0.0",
+      "skillFile": ".agents/skills/pve-visual-review/SKILL.md"
+    }
+  ]
+}

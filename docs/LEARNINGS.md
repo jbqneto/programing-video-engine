@@ -47,3 +47,13 @@ Use this file to accumulate confirmed findings, repeatable recipes, quality chec
 - **Reusable shortcut:** MCP \`list_agent_skills\` → \`get_agent_skill\`; CLI \`npm run skills -- list\` → \`npm run skills -- show scenario-motion-loops\`.
 - **Validation:** \`npm run skills:check\`, unit tests and stdio/HTTP MCP smoke tests verify that local files and documentation are available. This does not test Blender or a rendered video.
 - **Known limits:** External Blender/Playwright/Python/FFmpeg prerequisites are optional and not auto-installed; their production workflows are not yet first-party Remotion adapters.
+
+
+## 2026-11-05 — First-party quality gates around the actual MP4
+
+- **Context:** The curated Scenario motion loop skill provides a tested Canvas 2D loop system, but that system is separate from our Remotion/Three.js renderer.
+- **Observation:** We needed agent-callable quality operations on the encoded video that our existing engine creates, rather than a second renderer.
+- **Rule:** First render with Remotion. Generate a contact sheet from that MP4. Validate seam differences only for media deliberately designed as seamless loops. Keep first-party workflows in pve-* skills and copied vendor code unchanged.
+- **Reusable shortcut:** npm run quality -- sheet --input demo.mp4 --out quality/demo.png, then npm run quality -- loop --input loop.mp4; MCP equivalents render_contact_sheet and validate_loop.
+- **Validation:** Pure offline metric tests + an FFmpeg-generated video fixture verify decoding, frame sampling and PNG output in CI. Browser WebGL and complex 3D loop renders still require local verification.
+- **Known limits:** Mean RGB seam metrics may miss localized or perceptual glitches. Contact sheets must be examined; they are not an automated artistic quality score.
