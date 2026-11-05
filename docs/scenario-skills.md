@@ -16,7 +16,7 @@ This directory contains **seven unmodified, vendored skills** from [Scenario Lab
 
 ## First-party companion skills and quality tools
 
-The engine also ships three independently authored skills: pve-seamless-loops, pve-motion-presets and pve-visual-review. They are inventoried separately in .agents/skills/first-party-catalog.json, and they appear in npm run skills -- list and MCP list_agent_skills. The first-party skills refer to the curated Scenario procedures when useful, but direct the agent to our own Remotion pipeline, not Scenario's independent Canvas renderer.
+The engine also ships four first-party skills: the existing pve-cinematic-agent router and the new pve-seamless-loops, pve-motion-presets and pve-visual-review. They are inventoried separately in .agents/skills/first-party-catalog.json, and they appear in npm run skills -- list and MCP list_agent_skills. The first-party skills refer to the curated Scenario procedures when useful, but direct the agent to our own Remotion pipeline, not Scenario's independent Canvas renderer.
 
 The first-party quality implementation lives in scripts/quality/: validate the seam of a completed MP4 and generate an evenly sampled contact sheet of an encoded video through local FFmpeg. Details: [quality workflows](quality-workflows.md).
 

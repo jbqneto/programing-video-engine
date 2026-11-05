@@ -44,7 +44,21 @@ export function resolveImageOutputPath(name: string, overwrite = false) {
   const root = outRoot();
   const full = resolve(root, rel);
   if (!isInside(root, full)) throw new Error('PATH_NOT_ALLOWED');
-  mkdirSync(dirname(full), {recursive: true});
+  // Check every ancestor before creating folders. A symlink must never cause
+  // mkdir to write outside out/, even temporarily.
+  const directories = rel.split('/').slice(0, -1);
+  let cursor = root;
+  for (const part of directories) {
+    cursor = resolve(cursor, part);
+    if (!isInside(root, cursor)) throw new Error('PATH_NOT_ALLOWED');
+    const status = (() => {try {return lstatSync(cursor);} catch (error) {
+      if ((error as NodeJS.ErrnoException).code === 'ENOENT') return null;
+      throw error;
+    }})();
+    if (status) {
+      if (status.isSymbolicLink() || !status.isDirectory()) throw new Error('PATH_NOT_ALLOWED');
+    } else mkdirSync(cursor);
+  }
   if (!isInside(root, realpathSync(dirname(full)))) throw new Error('PATH_NOT_ALLOWED');
   if (existsSync(full)) {
     if (lstatSync(full).isSymbolicLink() || !isInside(root, realpathSync(full)) ||

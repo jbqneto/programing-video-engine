@@ -114,7 +114,7 @@ Agents can discover them via MCP `list_agent_skills` and read one via `get_agent
 
 ## First-party cinematic workflows and quality checks
 
-Alongside the seven vendored Scenario skills, three first-party agent skills guide reliable use of our **own** renderer:
+Alongside the seven vendored Scenario skills, the existing cinematic agent and three new first-party skills guide reliable use of our **own** renderer:
 
 - pve-seamless-loops — deterministic loop design and encoded seam analysis
 - pve-motion-presets — versioned preset design, reuse, and revision-safe edits

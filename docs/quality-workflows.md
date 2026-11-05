@@ -6,7 +6,7 @@ The engine now offers **first-party quality checks** for completed videos. These
 
 - Node.js 24 or 26 LTS for the project runtime.
 - FFmpeg and ffprobe installed on PATH.
-- The video must be stored under out/. Inputs are relative to that directory; path traversal and symlink escapes are rejected. Video limit: 500 MiB, up to 4096x4096 and 18,000 decoded frames.
+- The video must be stored under out/. Inputs are relative to that directory; path traversal and symlink escapes are rejected, including output-directory symlinks before any directory is created. Video limit: 500 MiB, up to 4096x4096 and 18,000 decoded frames.
 
 ## Validate an intentionally seamless loop
 

@@ -3,6 +3,13 @@
   "kind": "first-party",
   "skills": [
     {
+      "id": "pve-cinematic-agent",
+      "category": "direction",
+      "description": "Select the appropriate local agent production workflow and route tasks to existing presets and curated Scenario reference skills.",
+      "version": "1.0.0",
+      "skillFile": ".agents/skills/pve-cinematic-agent/SKILL.md"
+    },
+    {
       "id": "pve-seamless-loops",
       "category": "quality",
       "description": "Design and validate deterministic seamless Remotion video loops, check encoded seam metrics, and inspect loop frames.",
