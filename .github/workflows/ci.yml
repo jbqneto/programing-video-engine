@@ -29,6 +29,8 @@ jobs:
         run: npm run skills:check
       - name: Offline asset CLI tests
         run: npm run test
+      - name: Install FFmpeg for encoded-video quality tests
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: Validate actual encoded loop and generated contact sheet
         run: npm run quality:smoke
       - name: Project smoke check
