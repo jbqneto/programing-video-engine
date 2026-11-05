@@ -76,7 +76,7 @@ function command(executable: string, args: string[], timeout = 90_000, maxBuffer
 }
 
 function rationalRate(text: string) {
-  const [numerator, denominator = '1'] = text.split('/').map(Number);
+  const [numerator, denominator = 1] = text.split('/').map(Number);
   if (!Number.isFinite(numerator) || !Number.isFinite(denominator) || denominator <= 0 || numerator <= 0)
     throw new Error('INVALID_FPS');
   return numerator / denominator;
