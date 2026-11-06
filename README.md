@@ -2,9 +2,18 @@
 
 A declarative prototype for generating 3D videos with **Remotion + Three.js / React Three Fiber**. Projects are JSON files, with scene specifications kept separate from their renderers.
 
+## Runtime policy
+
+Node.js **26 LTS** is the default; Node.js **24 LTS** is also supported. CI runs both. All Remotion packages are pinned to the same patch version. See [dependency policy](docs/dependency-policy.md).
+
+    nvm install 26
+    nvm use 26
+    npm install
+    npm run check:versions
+
 ## Requirements
 
-- Node.js >= 22 and npm
+- Node.js 24 or 26 LTS (26 recommended) and npm
 - Chromium with WebGL; a GPU is recommended because software rendering can be slow
 - FFmpeg for video encoding
 
@@ -24,7 +33,7 @@ Verify both MCP transports: `npm run mcp:check`. Never expose the unauthenticate
 
 ## Quick start
 
-After installing Node.js 22+ and npm, run:
+After installing Node.js 24 or 26 LTS and npm, run:
 
 ```bash
 npm install && npm run demo
@@ -102,6 +111,24 @@ npm run skills:check
 ```
 
 Agents can discover them via MCP `list_agent_skills` and read one via `get_agent_skill`. See the [curated-skill inventory, prerequisites, license and usage](docs/scenario-skills.md). Blender, Python, FFmpeg and Playwright are **optional** external prerequisites for specific scripts; the copied scripts are not automatically executed by the video engine. The existing Remotion renderer remains the source of truth.
+
+## First-party cinematic workflows and quality checks
+
+Alongside the seven vendored Scenario skills, the existing cinematic agent and three new first-party skills guide reliable use of our **own** renderer:
+
+- pve-seamless-loops — deterministic loop design and encoded seam analysis
+- pve-motion-presets — versioned preset design, reuse, and revision-safe edits
+- pve-visual-review — frame-accurate contact sheets and iterative quality reviews
+
+Use npm run skills -- list or MCP list_agent_skills to discover them. They do not require a Scenario account.
+
+Quality commands operate on local rendered videos stored inside out/, using FFmpeg and ffprobe:
+
+    npm run quality -- loop --input my-loop.mp4
+    npm run quality -- sheet --input my-loop.mp4 --out quality/loop-sheet.png --count 9 --columns 3
+    npm run quality:smoke
+
+MCP also provides validate_loop and render_contact_sheet (the latter includes the PNG image in its response). See [quality workflows and limitations](docs/quality-workflows.md). These checks do not automatically produce a video or guarantee a perceptually seamless loop.
 
 ## Product roadmap
 

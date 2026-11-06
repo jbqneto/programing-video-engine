@@ -4,6 +4,7 @@ import {McpServer} from '@modelcontextprotocol/server';
 import * as z from 'zod/v4';
 import {PRESET_CATALOG} from '../../src/presets/registry';
 import {applyWorkbenchPreset, updateWorkbenchScene, readPreviewState, readProject, seekPreview} from './store';
+import {validateVideoLoop, generateContactSheet} from '../quality/core';
 
 const result = (payload: unknown) => ({content: [{type: 'text' as const, text: JSON.stringify(payload, null, 2)}]});
 const safe = <T>(fn: () => T | Promise<T>) => async () => {
@@ -95,14 +96,43 @@ export function createVideoMcpServer() {
   }, safe(() => readPreviewState()));
 
 
+  server.registerTool('validate_loop', {
+    description: 'Analyze a finished, intentionally looping MP4/MOV/WebM under out/. Measures the encoded first-to-last seam against neighboring frame motion. Does not prove artistic seamlessness. FFmpeg and ffprobe required; max 18,000 frames.',
+    inputSchema: z.object({input: z.string().min(1).max(220)}),
+    annotations: {readOnlyHint: true, destructiveHint: false, openWorldHint: false}
+  }, async ({input}) => {
+    try {return result(validateVideoLoop(input));}
+    catch (error) {return {isError: true, content: [{type: 'text' as const, text: error instanceof Error ? error.message : 'QUALITY_CHECK_FAILED'}]};}
+  });
+
+  server.registerTool('render_contact_sheet', {
+    description: 'Generate a sampled PNG contact sheet from an already rendered MP4/MOV/WebM under out/. Saves the PNG under out/quality/ and also returns it as an MCP image. Does not trigger video rendering or upload data.',
+    inputSchema: z.object({
+      input: z.string().min(1).max(220),
+      count: z.number().int().min(2).max(24).optional(),
+      columns: z.number().int().min(1).max(6).optional()
+    }),
+    annotations: {readOnlyHint: false, destructiveHint: false, openWorldHint: false}
+  }, async ({input, count, columns}) => {
+    try {
+      const output = 'quality/' + input.replace(/[/.]/g, '-') + '-' + (count ?? 9) + 'frames.png';
+      const sheet = generateContactSheet(input, output, count ?? 9, columns ?? 3, true);
+      return {content: [
+        {type: 'text' as const, text: JSON.stringify(sheet, null, 2)},
+        {type: 'image' as const, mimeType: 'image/png', data: readFileSync(sheet.path).toString('base64')}
+      ]};
+    } catch (error) {return {isError: true, content: [{type: 'text' as const, text: error instanceof Error ? error.message : 'CONTACT_SHEET_FAILED'}]};}
+  });
+
   server.registerTool('list_agent_skills', {
     description: 'Discover the curated, optional local animation, grading and Blender skills. Returns prerequisites, the pinned upstream source and on-disk SKILL.md locations. No scripts or network services are executed.',
     inputSchema: z.object({}),
     annotations: {readOnlyHint: true, destructiveHint: false, openWorldHint: false}
   }, safe(() => {
     const catalog = JSON.parse(readFileSync(resolve('.agents/skills/catalog.json'), 'utf8'));
+    const local = JSON.parse(readFileSync(resolve('.agents/skills/first-party-catalog.json'), 'utf8'));
     return {repository: catalog.repository, upstreamCommit: catalog.upstreamCommit,
-      policy: catalog.policy, skills: catalog.skills};
+      policy: catalog.policy, skills: catalog.skills, firstPartySkills: local.skills};
   }));
 
   server.registerTool('get_agent_skill', {
@@ -112,10 +142,11 @@ export function createVideoMcpServer() {
   }, async ({skillId}) => {
     try {
       const catalog = JSON.parse(readFileSync(resolve('.agents/skills/catalog.json'), 'utf8'));
-      const entry = catalog.skills.find((item: {id: string}) => item.id === skillId);
+      const local = JSON.parse(readFileSync(resolve('.agents/skills/first-party-catalog.json'), 'utf8'));
+      const entry = [...catalog.skills, ...local.skills].find((item: {id: string}) => item.id === skillId);
       if (!entry) throw new Error('Unknown skill: ' + skillId);
       const documentation = readFileSync(resolve('.agents/skills', skillId, 'SKILL.md'), 'utf8');
-      return result({id: skillId, source: entry.upstreamUrl, prerequisites: entry.runtime,
+      return result({id: skillId, source: entry.upstreamUrl ?? 'first-party', prerequisites: entry.runtime ?? 'Node.js and local FFmpeg as needed',
         warning: 'Local scripts require separate prerequisites. Do not run paid cloud actions without approval.',
         instructions: documentation});
     } catch (error) {

@@ -5,20 +5,34 @@ on:
     branches: [master]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['24', '26']
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: '22'
+          node-version: ${{ matrix.node-version }}
+          package-manager-cache: false
+      - name: Confirm supported runtime and aligned Remotion versions
+        run: npm run check:versions
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-      - name: Validate curated agent skills and provenance
+      - name: Validate first-party and curated agent skills
         run: npm run skills:check
       - name: Offline asset CLI tests
         run: npm run test
+      - name: Install FFmpeg for encoded-video quality tests
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Validate actual encoded loop and generated contact sheet
+        run: npm run quality:smoke
       - name: Project smoke check
         run: npm run smoke
       - name: Validate sample project
@@ -29,3 +43,6 @@ jobs:
         run: npm run ui:build
       - name: Verify stdio and local HTTP MCP
         run: npm run mcp:check
+      - name: Audit production dependencies for high or critical vulnerabilities
+        if: matrix.node-version == '26'
+        run: npm run audit:prod

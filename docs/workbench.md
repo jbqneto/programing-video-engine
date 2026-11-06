@@ -4,7 +4,7 @@ This MVP uses Remotion both in the browser (\`@remotion/player\`) and for CLI vi
 
 ## Start
 
-Requirements: Node.js 22+, npm; for visual 3D preview, a browser with WebGL.
+Requirements: Node.js 24 or 26 LTS, npm; for visual 3D preview, a browser with WebGL.
 
 \`\`\`bash
 npm install
@@ -63,6 +63,10 @@ Call `describe_timeline` to map the requested minute/second to a scene ID. Call 
 ```
 
 Allowed fields: `lounge-3d` supports title, camera, snowfall, palette, durationFrames; `motion-3d` supports title, subtitle, rings, palette, durationFrames; `image-transition` supports inputs, palette, durationFrames. Changing `durationFrames` shifts subsequent scene boundaries. Structural changes still require a new preset or explicit code edits. UI property editing and timeline keyframe editing are future milestones.
+
+### Review the exported video through MCP
+
+After rendering the validated project to an MP4 in out/, call render_contact_sheet with input set to the MP4 filename and an optional count/columns. The MCP returns a real PNG image plus selected frame/time metadata. For deliberately seamless loops, call validate_loop on the same file to get a first/last seam report (not a visual quality guarantee). These tools need FFmpeg and ffprobe; details are in docs/quality-workflows.md.
 
 ### Render the current edited project
 
